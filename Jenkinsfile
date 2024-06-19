@@ -29,7 +29,23 @@ pipeline {
            }
 
          }
-      
+     stage('Run Pylint') {
+            steps {
+                script {
+                    def pylintResult = sh(
+                        script: '''
+                            . ${VENV_DIR}/bin/activate
+                            pylint **/*.py --exit-zero
+                        ''',
+                        returnStatus: true
+                    )
+
+                    if (pylintResult != 0) {
+                        error "Pylint checks failed"
+                    }
+                }
+            }
+        }
 
       }
 
@@ -44,8 +60,17 @@ always {
             echo 'Pylint checks passed!'
         }
         failure {
-         
- 		echo 'failed'
+		echo 'Pylint checks failed.'
+            emailext (
+                subject: "Jenkins Job Failed: ${env.JOB_NAME}",
+                body: """
+                    <p>Build failed in Jenkins job ${env.JOB_NAME}.</p>
+                    <p>Check console output at <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                """,
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
+                to: "${env.EMAIL_RECIPIENTS}"
+            )
+
 }
 
 }
