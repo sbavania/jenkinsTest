@@ -15,8 +15,8 @@ pipeline {
                     url: "${env.GIT_REPO_URL}",
                     credentialsId: "${env.GIT_CREDS_ID}"
           }
-	
-	stage ('Set up Python Enviornment'){
+	}
+	stage('Set up Python Enviornment'){
 
            steps {
                    sh '''
