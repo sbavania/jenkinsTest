@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    enviornment{
+   environment{
 
         GIT_CREDS_ID = 'github_cred'
         GIT_REPO_URL = 'https://github.com/sbavania/jenkinsTest.git'
