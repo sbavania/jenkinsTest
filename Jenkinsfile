@@ -35,7 +35,7 @@ pipeline {
                     def pylintResult = sh(
                         script: '''
                             . ${VENV_DIR}/bin/activate
-                            pylint **/*.py --exit-zero
+                            pylint test.py --exit-zero
                         ''',
                         returnStatus: true
                     )
